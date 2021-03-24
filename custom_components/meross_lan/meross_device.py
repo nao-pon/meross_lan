@@ -16,7 +16,7 @@ from .const import *
 from .switch import MerossLanSwitch
 from .sensor import MerossLanSensor
 
-def build_payload(namespace: str, method: str, payload: Any):
+def build_payload(namespace: str, method: str, payload: Any, cKey: str = 'mss'):
     messageid = uuid4().hex
     timestamp = int(time())
     p = {
@@ -28,7 +28,7 @@ def build_payload(namespace: str, method: str, payload: Any):
                 #"from": "/appliance/9109182170548290882048e1e9522946/publish",
                 "timestamp": timestamp,
                 "timestampMs": 0,
-                "sign": md5((messageid + str(timestamp)).encode('utf-8')).hexdigest()
+                "sign": md5((messageid + cKey + str(timestamp)).encode('utf-8')).hexdigest()
             },
             "payload": payload
         }
